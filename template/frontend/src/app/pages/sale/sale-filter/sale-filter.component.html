@@ -1,0 +1,19 @@
+<nz-card nzTitle="Filtro" class="card-filter" [nzExtra]="extraTemplate" [ngClass]="{'collapsed': isCollapsed}">
+    <form nz-form [nzLayout]="'inline'" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!isCollapsed">
+
+        <nz-form-item class="filter-form-item">
+            <nz-form-control>
+                <input nz-input id="saleNumber" formControlName="saleNumber" [nzSize]="'large'" (ngModelChange)="onSubmit()"  placeholder="Sale number" (keydown.enter)="$event.preventDefault()"/>
+            </nz-form-control>
+        </nz-form-item>
+
+          <button nz-button nzType="link" (click)="clearFilters()" [nzSize]="'large'" class="align-right">
+              <span nz-icon nzType="close"></span>
+              Clear filters
+          </button>
+    </form>
+</nz-card>
+
+<ng-template #extraTemplate>
+    <img src="../../../../assets/icons/filter.svg" alt="" (click)="toggleCollapse()" style="cursor:pointer"/>
+</ng-template>

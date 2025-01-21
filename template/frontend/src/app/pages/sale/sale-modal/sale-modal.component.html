@@ -1,0 +1,152 @@
+<nz-skeleton [nzLoading]="loading > 0">
+    <div class="modal-content">
+        <h3 class="modal-subtitle">Fill in the fields, please note that fields with <span class="asterisk">*</span> are
+            mandatory.</h3>
+        <form nz-form [nzLayout]="'vertical'" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+            <div class="div-flex">
+                <nz-form-item class="custom-form-item">
+                    <nz-form-label nzFor="customerName" class="bold-label" nzRequired>Customer name</nz-form-label>
+                    <nz-form-control nzErrorTip="Campo Obrigatório">
+                        <input nz-input id="customerName" formControlName="customerName" nzSize="large"
+                            placeholder="type here..." />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div class="div-flex">
+                <nz-form-item class="custom-form-item">
+                    <nz-form-label nzFor="branch" class="bold-label" nzRequired>Branch</nz-form-label>
+                    <nz-form-control nzErrorTip="Campo Obrigatório">
+                        <input nz-input id="branch" formControlName="branch" nzSize="large"
+                            placeholder="type here..." />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div formArrayName="products" *ngFor="let item of products.controls; let i = index;">
+                <div class="div-flex" [formGroupName]="i">
+                    <div class="div-flex">
+                        <nz-form-item class="custom-form-item">
+                            <nz-form-label *ngIf="i === 0" nzFor="description{{i}}"
+                                class="bold-label">Description</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input id="description{{i}}" formControlName="description" nzSize="large"
+                                    placeholder="type here..." />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div class="div-flex">
+                        <nz-form-item class="custom-form-item">
+                            <nz-form-label *ngIf="i === 0" nzFor="quantity{{i}}"
+                                class="bold-label">Quantity</nz-form-label>
+                            <nz-form-control>
+                                <nz-input-number id="quantity{{i}}" style="width: 100%;" [nzFormatter]="formatter" [nzParser]="parser"
+                                    formControlName="quantity" nzPlaceHolder="type here..."
+                                    [nzSize]="'large'"></nz-input-number>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div class="div-flex">
+                        <nz-form-item class="custom-form-item">
+                            <nz-form-label *ngIf="i === 0" nzFor="unitPrice{{i}}" class="bold-label">Unit price</nz-form-label>
+                            <nz-form-control>
+                                <nz-input-number id="unitPrice{{i}}" style="width: 100%;" [nzFormatter]="formatter" [nzParser]="parser"
+                                    formControlName="unitPrice" nzPlaceHolder="type here..."
+                                    [nzSize]="'large'"></nz-input-number>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div class="div-flex">
+                        <nz-form-item class="custom-form-item">
+                            <nz-form-label *ngIf="i === 0" nzFor="isCancelled{{i}}"
+                                class="bold-label">Cancelled?</nz-form-label>
+                            <nz-form-control>
+                                <nz-radio-group id="isCancelled{{i}}" formControlName="isCancelled" [nzSize]="'large'">
+                                    <label nz-radio [nzValue]="false">No</label>
+                                    <label nz-radio [nzValue]="true">Yes</label>
+                                </nz-radio-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div class="div-flex">
+
+                        <nz-form-item class="custom-form-item">
+                            <nz-form-control>
+                                <button nz-button nzType="default" type="button" nzDanger (click)="deleteItem(i)">
+                                    <span nz-icon nzType="delete"></span>
+                                </button>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </div>
+
+            <div class="div-flex">
+                <div class="div-flex">
+                    <nz-form-item class="custom-form-item">
+                        <nz-form-label *ngIf="form.value.products.length === 0" nzFor="description"
+                            class="bold-label">Description</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input id="description" formControlName="description" nzSize="large"
+                                placeholder="type here..." />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="div-flex">
+                    <nz-form-item class="custom-form-item">
+                        <nz-form-label *ngIf="form.value.products.length === 0" nzFor="quantity"
+                            class="bold-label">Quantity</nz-form-label>
+                        <nz-form-control>
+                            <nz-input-number id="quantity" style="width: 100%;" [nzFormatter]="formatter" [nzParser]="parser"
+                                formControlName="quantity" nzPlaceHolder="type here..."
+                                [nzSize]="'large'"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="div-flex">
+                    <nz-form-item class="custom-form-item">
+                        <nz-form-label *ngIf="form.value.products.length === 0" nzFor="unitPrice"
+                            class="bold-label">Unit price</nz-form-label>
+                        <nz-form-control>
+                            <nz-input-number id="unitPrice" style="width: 100%;" [nzFormatter]="formatter" [nzParser]="parser"
+                                formControlName="unitPrice" nzPlaceHolder="type here..."
+                                [nzSize]="'large'"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="div-flex">
+                    <nz-form-item class="custom-form-item">
+                        <nz-form-label *ngIf="form.value.products.length === 0" nzFor="isCancelled"
+                            class="bold-label">Cancelled?</nz-form-label>
+                        <nz-form-control>
+                            <nz-radio-group id="isCancelled" formControlName="isCancelled" [nzSize]="'large'">
+                                <label nz-radio [nzValue]="false">No</label>
+                                <label nz-radio [nzValue]="true">Yes</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div class="div-flex">
+                    <nz-form-item class="custom-form-item">
+                        <nz-form-control>
+                            <button nz-button nzType="default" type="button" (click)="addItem()">
+                                <span nz-icon nzType="plus"></span>
+                            </button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <nz-alert nzType="error" [nzMessage]="errorMsg" *ngIf="showError"></nz-alert>
+
+
+            <div class="ant-modal-footer">
+                <button nz-button nzType="default" type="button" (click)="handleCancel()">Cancelar</button>
+                <button nz-button nzType="primary" type="submit" class="button-save">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</nz-skeleton>
